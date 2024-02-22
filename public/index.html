@@ -3,17 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="/app.css">
     <title>Carflix</title>
 </head>
 <body>
-    <header>
-        <nav class="container">
+    <div class="cf-container flex items-center justify-between">
+        <a>
+            <img width="200" src="/img/logo.webp">
+        </a>
+        <nav class=" text-primary font-bold uppercase flex items-center gap-8 max-lg:hidden">
             <a>Quero Vender</a>
             <a>Quero Comprar</a>
             <a>Perguntas Frequentes</a>
-            <a>Seja um Franqueado!</a>
+            <a class="cf-button bg-primary text-white">Seja um Franqueado!</a>
         </nav>
-    </header>
+    </div>
+    
+    <div class="bg-primary">
+        <div class="cf-container relative h-[45rem]">
+            <img src="/img/senhor.webp" class="absolute bottom-0 left-1/2 -translate-x-1/2 h-80 lg:h-[90%]">
+            <div class="grid lg:grid-cols-2 h-full items-center">
+                <div>
+                    <h1 class="lg:text-5xl text-4xl max-lg:text-center text-white">Venda ou compre<br> seu carro de forma<br> <strong>prática e segura!</strong></h1>
+                    <img src="/img/mini-cooper.webp">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="cf-container grid lg:grid-cols-2 items-center gap-32 lg:py-32 py-12">
+        <div>
+            <h2 class="text-primary text-3xl font-bold">Título</h2>
+            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Autem nobis maxime nisi, atque dolorum molestiae distinctio nihil beatae vel consectetur voluptatum assumenda, a deserunt illo! Suscipit explicabo labore molestiae quia.</p>
+
+            <a class="cf-button bg-primary text-white mt-16">
+                Quero Vender!
+            </a>
+        </div>
+        <div>
+            <img src="/img/mobi.webp">
+        </div>
+    </div>
 </body>
 </html>

@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind utilities;
 @tailwind components;
+
+@layer components {
+    .cf-container{
+        @apply max-w-7xl mx-auto max-lg:px-8;
+    }
+
+    .cf-button{
+        @apply py-1.5 px-6 rounded-lg uppercase inline-flex text-lg font-bold cursor-pointer;
+    }
+}
