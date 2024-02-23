@@ -8,6 +8,6 @@
     }
 
     .cf-button{
-        @apply py-1.5 px-6 rounded-lg uppercase inline-flex text-lg font-bold cursor-pointer;
+        @apply py-1.5 px-6 rounded-xl uppercase inline-flex font-bold cursor-pointer;
     }
 }
