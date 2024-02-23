@@ -8,6 +8,11 @@
     }
 
     .cf-button{
-        @apply py-1.5 px-6 rounded-xl uppercase inline-flex font-bold cursor-pointer;
+        @apply py-1.5 px-6 rounded-xl inline-flex justify-center font-bold cursor-pointer;
+    }
+
+    .cf-input {
+        @apply py-1.5 px-4 outline-none duration-500 focus:border-primary border-2 border-neutral-300 w-full shadow-md shadow-neutral-300;
+        @apply rounded-xl;
     }
 }
