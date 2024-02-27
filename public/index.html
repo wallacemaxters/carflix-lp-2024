@@ -11,10 +11,49 @@
         href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="/app.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/mask@3.x.x/dist/cdn.min.js"></script>
+ 
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    
+
     <script>
         document.addEventListener('alpine:init', function () {
+
+            Alpine.data('form', function () {
+
+                return {
+                    anoMaximo: new Date().getFullYear(),
+
+                    onSearch: function (q) {
+
+                        if (! this.form.ano) return;
+
+                        const url = 'https://api.carflix.com.br/tabela-carflix/versoes?' + new URLSearchParams({
+                            ano: this.form.ano,
+                            q,
+                        });
+
+                        this.carregando = true;
+
+                        fetch(url, {
+                            method: 'get',
+                        }).then(async (res) => {
+                            const data = await res.json()
+                            this.veiculos = data.slice(0, 10);
+                        })
+                        .finally(() => {
+                            this.carregando = false;
+                        })
+                    },
+                    form: {},
+                    carregando: false,
+                    veiculos: [],
+                    selecionarVeiculo(item) {
+                        this.form.id = item.id;
+                        this.form.veiculo_nome = item.text;
+                        this.veiculos = []
+                    }
+                };
+            })
 
             Alpine.data('map', function () {
 
@@ -22,15 +61,19 @@
                     {
                         title: 'Carflix Taubaté',
                         address: 'R. Coelho Lisboa, 861 Tatuapé, São Paulo - SP, 03323-040',
-                        email: 'taubate@carflix.com.br'
-                    }, 
+                        phone: '(xx) xxxxx-xxxx',
+                        email: 'taubate@carflix.com.br',
+                        opening_hours: '09:00-18:00'
+                    },
                     {
                         title: 'Carfix Minas Gerais',
                         address: 'R. Lebre Braga, 972 Tatuapé, Minas Gerais - MG, 03323-040',
-                        email: 'mg@carflix.com.br'
+                        phone: '(xx) 3xxxx-xxxx',
+                        email: 'mg@carflix.com.br',
+                        opening_hours: '09:00-17:00'
                     }
                 ];
-                
+
                 return {
 
                     search: function (v) {
@@ -70,7 +113,8 @@
 
     <div class="bg-primary">
         <div class="cf-container relative lg:h-[45rem] h-[calc(100vh-5rem)] max-lg:py-12">
-            <img src="/img/senhor.webp" class="absolute bottom-0 max-lg:right-4 lg:left-1/2 lg:-translate-x-1/2 h-80 lg:h-[90%] max-lg:z-10">
+            <img src="/img/senhor.webp"
+                class="absolute bottom-0 max-lg:right-4 lg:left-1/2 lg:-translate-x-1/2 h-80 lg:h-[90%] max-lg:z-10">
             <div class="h-full items-center flex max-lg:flex-col gap-16">
                 <div class="lg:col-span-2 max-lg:row-span-1">
                     <h1 class="lg:text-5xl text-4xl max-lg:text-center text-white">Venda ou compre<br> seu carro de
@@ -78,18 +122,33 @@
                     <img src="/img/mini-cooper.webp" class="max-lg:absolute max-lg:bottom-0 max-lg:left-0 max-lg:z-0">
                 </div>
                 <div class="flex justify-end max-lg:row-span-3">
-                    <form class="bg-white rounded-2xl p-7 relative z-50 space-y-6 shadow-lg shadow-black/30">
+                    <form x-data="form"
+                        method="GET"
+                        class="bg-white rounded-2xl p-7 relative z-50 space-y-6 shadow-lg shadow-black/30">
                         <header class="text-center">
                             <div class="text-sm text-neutral-400 font-bold">Entre em Contato</div>
                             <div class="text-3xl text-primary font-bold">Nós te ajudamos!</div>
                         </header>
-                        <input class="cf-input" placeholder="E-mail">
-                        <input class="cf-input" placeholder="Telefone">
-                        <input class="cf-input" placeholder="Veículo">
-                        <input class="cf-input" placeholder="Ano do Veículo">
-                        <div class="grid grid-cols-2 gap-3">
-                            <button class="cf-button bg-primary border-2 text-white hover:bg-transparent text-lg hover:text-primary hover:border-primary" type="button">Quer Vender</button>
-                            <button class="cf-button bg-primary border-2 text-white text-lg hover:bg-transparent hover:text-primary hover:border-primary" type="button">Quer Comprar</button>
+                        <input class="cf-input" placeholder="E-mail" x-model="form.email" type="email">
+                        <input class="cf-input" placeholder="Telefone" x-model="form.telefone" x-mask="(99) 99999-9999">
+                        <input class="cf-input" placeholder="Ano do Veículo" x-model="form.ano" type="number" min="2000"
+                            :max="anoMaximo">
+                        <input class="cf-input" x-model="form.veiculo_nome" placeholder="Veículo" x-on:input.debounce.250ms="onSearch($event.target.value)">
+                        <ul class="absolute bg-white h-96 overflow-auto divide-y" x-show="veiculos.length > 0">
+                            <template x-for="v in veiculos">
+                                <li class="px-5 py-1.5 cursor-pointer" x-on:click="selecionarVeiculo(v)">
+                                    <span x-text="v.text"></span>
+                                </li>
+                            </template>
+                        </ul>
+
+                        <div class="flex justify-center">
+                            <a
+                                x-bind:href="'https://www.carflix.com.br/vender-meu-carro/?' + new URLSearchParams(form)"
+                                class="cf-button bg-primary border-2 text-white text-lg hover:bg-transparent hover:text-primary hover:border-primary"
+                                type="submit">
+                                Quer Vender
+                            </a>
                         </div>
                     </form>
                 </div>
@@ -118,6 +177,7 @@
         </div>
     </div>
 
+
     <div class="cf-container grid lg:grid-cols-2 items-center gap-32 lg:py-20 py-12">
         <div>
             <h2 class="text-primary text-3xl font-bold">Título</h2>
@@ -134,7 +194,7 @@
         </div>
     </div>
 
-
+    <img src="/img/bg-wave-top.svg" class="flex">
     <section class="lg:py-20 py-12 bg-primary text-white">
         <div class="mx-auto max-w-5xl max-lg:px-8">
             <div class="grid lg:grid-cols-2 gap-16">
@@ -162,6 +222,7 @@
             </div>
         </div>
     </section>
+    <img src="/img/bg-wave-top.svg" class="flex -scale-100">
 
 
     <section class="py-20">
@@ -197,23 +258,44 @@
                 <h2 class="text-4xl font-bold text-primary">
                     Encontre uma loja perto de você
                 </h2>
-                <input class="cf-input" placeholder="Digite o Cep ou Endereço" x-on:input="search($event.target.value)">
-                <template x-for="item in items">
-                    <div class="shadow flex bg-white">
-                        <div class="grow p-4">
-                            <h4 class="text-primary font-bold text-xl" x-text="item.title"></h4>
-                            <div class="text-sm">
-                                <p class="mb-5" x-text="item.address"></p>
+                <div class="flex items-center relative">
+                    <input class="cf-input" placeholder="Digite o Cep ou Endereço"
+                        x-on:input="search($event.target.value)">
 
+                    <svg class="absolute right-3 pointer-events-none" xmlns="http://www.w3.org/2000/svg" width="24"
+                        height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </div>
+                <template x-for="item in items">
+                    <div class="shadow grow p-4 bg-white">
+                        <h4 class="text-primary font-bold text-xl" x-text="item.title"></h4>
+                        <div class="text-xs space-y-2">
+                            <p x-text="item.address"></p>
+                            <div class="grid grid-cols-2">
                                 <p>
-                                    Tel: (XX) XXXX-XXXX
+                                    <strong>Tel:</strong> <span x-text="item.phone"></span>
                                 </p>
-                                <p>Email: <span x-text="item.email"></span></p>
+                                <p><strong>E-mail:</strong> <span x-text="item.email"></span></p>
                             </div>
+                            <p>
+                                <strong>Horário de funcionamento:</strong> <span x-text="item.opening_hours"></span>
+                            </p>
+                            <a href="https://wa.me/numero" class="font-bold flex items-center">
+                                <svg class="w-9 flex-none" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 27 26">
+                                    <path fill="#fff" d="m3.424 23.183 1.43-5.223a10.06 10.06 0 0 1-1.346-5.04C3.511 7.364 8.033 2.843 13.592 2.843a10.02 10.02 0 0 1 7.132 2.956 10.019 10.019 0 0 1 2.95 7.13c-.002 5.558-4.526 10.08-10.082 10.08h-.005c-1.687 0-3.345-.423-4.818-1.227l-5.345 1.402Z"/>
+                                    <path fill="#fff" d="M3.424 23.449a.265.265 0 0 1-.256-.335l1.401-5.118a10.345 10.345 0 0 1-1.326-5.074C3.246 7.216 7.888 2.575 13.592 2.575a10.285 10.285 0 0 1 7.32 3.034 10.282 10.282 0 0 1 3.028 7.319c-.002 5.704-4.645 10.345-10.348 10.345-1.694 0-3.37-.419-4.856-1.21L3.49 23.44a.245.245 0 0 1-.067.009Z"/>
+                                    <path fill="#CFD8DC" d="M13.591 2.842a10.02 10.02 0 0 1 7.133 2.956 10.02 10.02 0 0 1 2.95 7.13c-.002 5.558-4.525 10.08-10.082 10.08h-.005c-1.687 0-3.345-.423-4.818-1.227l-5.345 1.402 1.43-5.223a10.059 10.059 0 0 1-1.346-5.039C3.511 7.363 8.033 2.842 13.592 2.842Zm0-.531c-5.85 0-10.611 4.76-10.614 10.61 0 1.788.451 3.55 1.307 5.11l-1.373 5.013a.53.53 0 0 0 .648.653l5.144-1.349a10.636 10.636 0 0 0 4.884 1.192c5.855 0 10.616-4.76 10.619-10.61A10.545 10.545 0 0 0 21.1 5.423a10.551 10.551 0 0 0-7.509-3.112Z"/>
+                                    <path fill="#40C351" d="M19.52 7.001a8.324 8.324 0 0 0-5.926-2.456c-4.622 0-8.381 3.757-8.384 8.377 0 1.583.443 3.124 1.282 4.458l.2.317-.847 3.092 3.172-.832.306.182a8.364 8.364 0 0 0 4.265 1.167h.004c4.619 0 8.378-3.758 8.38-8.378 0-2.238-.87-4.343-2.453-5.927Z"/>
+                                    <path fill="#fff" fill-rule="evenodd" d="M11.071 8.708c-.188-.42-.387-.428-.567-.436-.147-.006-.315-.006-.483-.006a.926.926 0 0 0-.672.316c-.23.252-.882.861-.882 2.1 0 1.24.903 2.438 1.029 2.606.126.168 1.743 2.793 4.304 3.803 2.128.839 2.561.672 3.023.63.462-.042 1.49-.609 1.7-1.197.21-.589.21-1.093.148-1.198-.064-.105-.232-.168-.483-.294-.252-.126-1.49-.736-1.722-.82-.23-.083-.399-.125-.567.127-.168.252-.65.82-.798.987-.147.168-.294.19-.546.063-.251-.126-1.063-.392-2.026-1.25-.748-.667-1.254-1.492-1.401-1.744-.147-.252-.016-.388.11-.514.114-.114.252-.295.379-.442.125-.147.167-.252.251-.42.084-.168.042-.315-.021-.441-.062-.126-.552-1.372-.776-1.87Z" clip-rule="evenodd"/>
+                                </svg>
+                                <span>
+                                    Entre em contato agora pelo WhatsApp
+                                </span>
+                            </a>
                         </div>
-                        <iframe src="https://maps.google.com/maps?q=Carflix&t=&z=16&ie=UTF8&iwloc=&output=embed"
-                            width="130" height="130" style="border:0;" allowfullscreen loading="lazy"
-                            referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
                 </template>
             </asidec>
@@ -237,9 +319,11 @@
         <div class="cf-container text-center">
             <h2 class="text-4xl font-bold text-primary">Veja os Veículos</h2>
             <p class="mb-8">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-                Architecto, iste veniam eos ipsa, necessitatibus fugit laborum illo at soluta porro inventore minus vel omnis accusamus unde magni fugiat ex natus nobis neque aspernatur quo? 
-                Voluptas ad corrupti quaerat aspernatur quod minus ipsam dolorem incidunt harum ex eligendi delectus et modi ducimus iusto impedit eum quae id, error distinctio itaque molestiae.
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Architecto, iste veniam eos ipsa, necessitatibus fugit laborum illo at soluta porro inventore minus vel
+                omnis accusamus unde magni fugiat ex natus nobis neque aspernatur quo?
+                Voluptas ad corrupti quaerat aspernatur quod minus ipsam dolorem incidunt harum ex eligendi delectus et
+                modi ducimus iusto impedit eum quae id, error distinctio itaque molestiae.
             </p>
         </div>
         <div class="w-full relative">
