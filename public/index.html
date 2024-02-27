@@ -12,7 +12,7 @@
         rel="stylesheet">
     <link rel="stylesheet" href="/app.css">
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/mask@3.x.x/dist/cdn.min.js"></script>
- 
+
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     <script>
@@ -33,7 +33,7 @@
 
                     onSearch: function (q) {
 
-                        if (! this.form.ano) return;
+                        if (!this.form.ano) return;
 
                         const url = 'https://api.carflix.com.br/tabela-carflix/versoes?' + new URLSearchParams({
                             ano: this.form.ano,
@@ -48,9 +48,9 @@
                             const data = await res.json()
                             this.veiculos = data.slice(0, 10);
                         })
-                        .finally(() => {
-                            this.carregando = false;
-                        })
+                            .finally(() => {
+                                this.carregando = false;
+                            })
                     },
                     form: {},
                     carregando: false,
@@ -63,32 +63,34 @@
                 };
             })
 
-            Alpine.data('map', function () {
-
-                const items = [
-                    {
-                        title: 'Carflix Taubaté',
-                        address: 'R. Coelho Lisboa, 861 Tatuapé, São Paulo - SP, 03323-040',
-                        phone: '(xx) xxxxx-xxxx',
-                        email: 'taubate@carflix.com.br',
-                        opening_hours: '09:00-18:00'
-                    },
-                    {
-                        title: 'Carfix Minas Gerais',
-                        address: 'R. Lebre Braga, 972 Tatuapé, Minas Gerais - MG, 03323-040',
-                        phone: '(xx) 3xxxx-xxxx',
-                        email: 'mg@carflix.com.br',
-                        opening_hours: '09:00-17:00'
-                    }
+            Alpine.data('map', () => {
+                const ITEMS = [
+                    { "id": "75dd96af-e14a-4906-b086-eb5812263573", "title": "Carflix Brooklin", "address1": "Av Vereador José Diniz 1352", "address2": "São Paulo, SP, Brazil", "coords": { "lat": -23.6324513, "lng": -46.6890561 }, "placeId": "ChIJBX65KuNRzpQRHhpq7edQyjo" },
+                    { "id": "34AB9897-C74F-4141-B039-8D818305E3C2", "title": "Carflix Butantã", "address1": "Av. Prof. Francisco Morato, 2718", "address2": "São Paulo, SP, Brazil", "coords": { "lat": -23.5846118, "lng": -46.7251668 } },
+                    { "id": "03C4F2B7-16FB-4223-8B32-53F9DFCBFD63", "title": "Carflix Pompeia", "address1": "Rua Coriolano, 405", "address2": "São Paulo, SP, Brazil", "coords": { "lat": -23.5262262, "lng": -46.6893611 }, "placeId": "ChIJ09bkp3b5zpQRy5rWIgpxOm8" },
+                    { "id": "3685D67D-ADCF-4A49-A156-6431D314B645", "title": "Carflix Tatuapé", "address1": "Rua Coelho Lisboa, 861", "address2": "São Paulo, SP, Brazil", "coords": { "lat": -23.5517272, "lng": -46.571113 }, "placeId": "ChIJxUS9i29fzpQRUsdQmK_ukWs" },
+                    { "id": "8CB9A9CF-E362-4599-B67C-FBEA0D5C7531", "title": "Carflix Villa Lobos", "address1": "Av. Queiroz Filho, 923 - Loja 03", "address2": "São Paulo, SP, Brazil", "coords": { "lat": -23.5400497, "lng": -46.7277162 }, "placeId": "ChIJvyBbnbJXzpQR2RJas-ZscRE" },
+                    { "id": "178DAA19-F2FF-4B6B-9957-630A277A0ABF", "title": "Carflix Barra", "address1": "Avenida Ayrton Senna, 2600", "address2": "Rio de Janeiro, RJ, Brazil", "coords": { "lat": -22.9883631, "lng": -43.3638919 }, "placeId": "ChIJZfL7PKXbmwARz2bKtzk4yBY" },
+                    { "id": "2bee9e11-e414-47a9-afb0-d13cc72ce44a", "title": "Carflix São Bernardo do Campo", "address1": "Av. Pereira Barreto, 150 - loja 11 (Supermercado Sond)", "address2": " São Bernardo do Campo, SP, Brazil", "coords": { "lat": -23.686447, "lng": -46.5463291 }, "placeId": "ChIJR-1YddpDzpQR7RaNgGcI33I" },
+                    { "id": "7b04e2d8-ce41-4501-a391-b93ce39bc423", "title": "Carflix Santana", "address1": "Av. Água Fria, 430", "address2": "São Paulo, SP, Brazil", "coords": { "lat": -23.4834701, "lng": -46.6298157 }, "placeId": "ChIJuVN_5GT3zpQRs5DlkylbcSE" },
+                    { "id": "07caa552-2106-4010-ba8b-f57ea264f775", "title": "Carflix Guaruhos", "address1": "Av. Paulo Faccini, 925 - Loja 28, lote B", "address2": "Guarulhos, SP, Brazil", "coords": { "lat": -23.4623505, "lng": -46.5387704 }, "placeId": "ChIJb11LVmf1zpQRUlXQ4m-Esjw" }
                 ];
-
                 return {
-
-                    search: function (v) {
-                        this.items = items.filter(x => JSON.stringify(x).includes(v));
+                    init() {
+                        this.currentItem = this.items[0]
                     },
+                    select(item) {
+                        this.currentItem = item;
+                    },
+                    search: function (v) {
+                        this.items = ITEMS.filter(x => JSON.stringify(x).toLowerCase().includes(v));
+                    },
+                    items: ITEMS,
+                    currentItem: null,
 
-                    items,
+                    get urlIframe() {
+                        return `https://maps.google.com/maps?q=${this.currentItem.coords.lat},${this.currentItem.coords.lng}&t=&z=16&ie=UTF8&iwloc=&output=embed`
+                    }
                 }
             })
         })
@@ -130,8 +132,7 @@
                     <img src="/img/mini-cooper.webp" class="max-lg:absolute max-lg:bottom-0 max-lg:left-0 max-lg:z-0">
                 </div>
                 <div class="flex justify-end max-lg:row-span-3">
-                    <form x-data="form"
-                        method="GET"
+                    <form x-data="form" method="GET"
                         class="bg-white rounded-2xl p-7 relative z-50 space-y-6 shadow-lg shadow-black/30">
                         <header class="text-center">
                             <div class="text-sm text-neutral-400 font-bold">Entre em Contato</div>
@@ -141,7 +142,8 @@
                         <input class="cf-input" placeholder="Telefone" x-model="form.telefone" x-mask="(99) 99999-9999">
                         <input class="cf-input" placeholder="Ano do Veículo" x-model="form.ano" type="number" min="2000"
                             :max="anoMaximo">
-                        <input class="cf-input" x-model="form.veiculo_nome" placeholder="Veículo" x-on:input.debounce.250ms="onSearch($event.target.value)">
+                        <input class="cf-input" x-model="form.veiculo_nome" placeholder="Veículo"
+                            x-on:input.debounce.250ms="onSearch($event.target.value)">
                         <ul class="absolute bg-white h-96 overflow-auto divide-y" x-show="veiculos.length > 0">
                             <template x-for="v in veiculos">
                                 <li class="px-5 py-1.5 cursor-pointer" x-on:click="selecionarVeiculo(v)">
@@ -151,8 +153,7 @@
                         </ul>
 
                         <div class="flex justify-center">
-                            <a
-                                x-bind:href="urlPesquisa"
+                            <a x-bind:href="urlPesquisa"
                                 class="cf-button bg-primary border-2 text-white text-lg hover:bg-transparent hover:text-primary hover:border-primary"
                                 type="submit">
                                 Quer Vender
@@ -260,9 +261,9 @@
     </section>
 
 
-    <section class="lg:py-20 py-12">
+    <section class="lg:py-20 py-12" x-data="map">
         <div class="cf-container grid lg:grid-cols-5 grid-cols-1 gap-8">
-            <asidec class="lg:col-span-2 space-y-4 bg-neutral-50 p-8 shadow-lg shadow-neutral-400" x-data="map()">
+            <aside class="lg:col-span-2 space-y-4 bg-neutral-50 p-8 shadow-lg shadow-neutral-400">
                 <h2 class="text-4xl font-bold text-primary">
                     Encontre uma loja perto de você
                 </h2>
@@ -278,10 +279,10 @@
                     </svg>
                 </div>
                 <template x-for="item in items">
-                    <div class="shadow grow p-4 bg-white">
-                        <h4 class="text-primary font-bold text-xl" x-text="item.title"></h4>
+                    <div class="shadow p-4 bg-white block">
+                        <a x-on:click="select(item)" class="text-primary font-bold text-xl cursor-pointer" x-text="item.title"></a>
                         <div class="text-xs space-y-2">
-                            <p x-text="item.address"></p>
+                            <p x-text="item.address1"></p>
                             <div class="grid grid-cols-2">
                                 <p>
                                     <strong>Tel:</strong> <span x-text="item.phone"></span>
@@ -292,12 +293,19 @@
                                 <strong>Horário de funcionamento:</strong> <span x-text="item.opening_hours"></span>
                             </p>
                             <a href="https://wa.me/numero" class="font-bold flex items-center">
-                                <svg class="w-9 flex-none" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 27 26">
-                                    <path fill="#fff" d="m3.424 23.183 1.43-5.223a10.06 10.06 0 0 1-1.346-5.04C3.511 7.364 8.033 2.843 13.592 2.843a10.02 10.02 0 0 1 7.132 2.956 10.019 10.019 0 0 1 2.95 7.13c-.002 5.558-4.526 10.08-10.082 10.08h-.005c-1.687 0-3.345-.423-4.818-1.227l-5.345 1.402Z"/>
-                                    <path fill="#fff" d="M3.424 23.449a.265.265 0 0 1-.256-.335l1.401-5.118a10.345 10.345 0 0 1-1.326-5.074C3.246 7.216 7.888 2.575 13.592 2.575a10.285 10.285 0 0 1 7.32 3.034 10.282 10.282 0 0 1 3.028 7.319c-.002 5.704-4.645 10.345-10.348 10.345-1.694 0-3.37-.419-4.856-1.21L3.49 23.44a.245.245 0 0 1-.067.009Z"/>
-                                    <path fill="#CFD8DC" d="M13.591 2.842a10.02 10.02 0 0 1 7.133 2.956 10.02 10.02 0 0 1 2.95 7.13c-.002 5.558-4.525 10.08-10.082 10.08h-.005c-1.687 0-3.345-.423-4.818-1.227l-5.345 1.402 1.43-5.223a10.059 10.059 0 0 1-1.346-5.039C3.511 7.363 8.033 2.842 13.592 2.842Zm0-.531c-5.85 0-10.611 4.76-10.614 10.61 0 1.788.451 3.55 1.307 5.11l-1.373 5.013a.53.53 0 0 0 .648.653l5.144-1.349a10.636 10.636 0 0 0 4.884 1.192c5.855 0 10.616-4.76 10.619-10.61A10.545 10.545 0 0 0 21.1 5.423a10.551 10.551 0 0 0-7.509-3.112Z"/>
-                                    <path fill="#40C351" d="M19.52 7.001a8.324 8.324 0 0 0-5.926-2.456c-4.622 0-8.381 3.757-8.384 8.377 0 1.583.443 3.124 1.282 4.458l.2.317-.847 3.092 3.172-.832.306.182a8.364 8.364 0 0 0 4.265 1.167h.004c4.619 0 8.378-3.758 8.38-8.378 0-2.238-.87-4.343-2.453-5.927Z"/>
-                                    <path fill="#fff" fill-rule="evenodd" d="M11.071 8.708c-.188-.42-.387-.428-.567-.436-.147-.006-.315-.006-.483-.006a.926.926 0 0 0-.672.316c-.23.252-.882.861-.882 2.1 0 1.24.903 2.438 1.029 2.606.126.168 1.743 2.793 4.304 3.803 2.128.839 2.561.672 3.023.63.462-.042 1.49-.609 1.7-1.197.21-.589.21-1.093.148-1.198-.064-.105-.232-.168-.483-.294-.252-.126-1.49-.736-1.722-.82-.23-.083-.399-.125-.567.127-.168.252-.65.82-.798.987-.147.168-.294.19-.546.063-.251-.126-1.063-.392-2.026-1.25-.748-.667-1.254-1.492-1.401-1.744-.147-.252-.016-.388.11-.514.114-.114.252-.295.379-.442.125-.147.167-.252.251-.42.084-.168.042-.315-.021-.441-.062-.126-.552-1.372-.776-1.87Z" clip-rule="evenodd"/>
+                                <svg class="w-9 flex-none" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    viewBox="0 0 27 26">
+                                    <path fill="#fff"
+                                        d="m3.424 23.183 1.43-5.223a10.06 10.06 0 0 1-1.346-5.04C3.511 7.364 8.033 2.843 13.592 2.843a10.02 10.02 0 0 1 7.132 2.956 10.019 10.019 0 0 1 2.95 7.13c-.002 5.558-4.526 10.08-10.082 10.08h-.005c-1.687 0-3.345-.423-4.818-1.227l-5.345 1.402Z" />
+                                    <path fill="#fff"
+                                        d="M3.424 23.449a.265.265 0 0 1-.256-.335l1.401-5.118a10.345 10.345 0 0 1-1.326-5.074C3.246 7.216 7.888 2.575 13.592 2.575a10.285 10.285 0 0 1 7.32 3.034 10.282 10.282 0 0 1 3.028 7.319c-.002 5.704-4.645 10.345-10.348 10.345-1.694 0-3.37-.419-4.856-1.21L3.49 23.44a.245.245 0 0 1-.067.009Z" />
+                                    <path fill="#CFD8DC"
+                                        d="M13.591 2.842a10.02 10.02 0 0 1 7.133 2.956 10.02 10.02 0 0 1 2.95 7.13c-.002 5.558-4.525 10.08-10.082 10.08h-.005c-1.687 0-3.345-.423-4.818-1.227l-5.345 1.402 1.43-5.223a10.059 10.059 0 0 1-1.346-5.039C3.511 7.363 8.033 2.842 13.592 2.842Zm0-.531c-5.85 0-10.611 4.76-10.614 10.61 0 1.788.451 3.55 1.307 5.11l-1.373 5.013a.53.53 0 0 0 .648.653l5.144-1.349a10.636 10.636 0 0 0 4.884 1.192c5.855 0 10.616-4.76 10.619-10.61A10.545 10.545 0 0 0 21.1 5.423a10.551 10.551 0 0 0-7.509-3.112Z" />
+                                    <path fill="#40C351"
+                                        d="M19.52 7.001a8.324 8.324 0 0 0-5.926-2.456c-4.622 0-8.381 3.757-8.384 8.377 0 1.583.443 3.124 1.282 4.458l.2.317-.847 3.092 3.172-.832.306.182a8.364 8.364 0 0 0 4.265 1.167h.004c4.619 0 8.378-3.758 8.38-8.378 0-2.238-.87-4.343-2.453-5.927Z" />
+                                    <path fill="#fff" fill-rule="evenodd"
+                                        d="M11.071 8.708c-.188-.42-.387-.428-.567-.436-.147-.006-.315-.006-.483-.006a.926.926 0 0 0-.672.316c-.23.252-.882.861-.882 2.1 0 1.24.903 2.438 1.029 2.606.126.168 1.743 2.793 4.304 3.803 2.128.839 2.561.672 3.023.63.462-.042 1.49-.609 1.7-1.197.21-.589.21-1.093.148-1.198-.064-.105-.232-.168-.483-.294-.252-.126-1.49-.736-1.722-.82-.23-.083-.399-.125-.567.127-.168.252-.65.82-.798.987-.147.168-.294.19-.546.063-.251-.126-1.063-.392-2.026-1.25-.748-.667-1.254-1.492-1.401-1.744-.147-.252-.016-.388.11-.514.114-.114.252-.295.379-.442.125-.147.167-.252.251-.42.084-.168.042-.315-.021-.441-.062-.126-.552-1.372-.776-1.87Z"
+                                        clip-rule="evenodd" />
                                 </svg>
                                 <span>
                                     Entre em contato agora pelo WhatsApp
@@ -306,7 +314,7 @@
                         </div>
                     </div>
                 </template>
-            </asidec>
+            </aside>
             <div class="lg:col-span-3 max-lg:hidden">
                 <h2 class="text-3xl font-bold text-primary">Mapa</h2>
                 <p class="text-neutral-600 mb-5">
@@ -315,9 +323,8 @@
                     dolorem.
                     Ratione dolores dolorum rerum magni sint, doloremque facere veritatis.
                 </p>
-                <iframe src="https://maps.google.com/maps?q=Carflix&t=&z=16&ie=UTF8&iwloc=&output=embed" width="100%"
-                    height="650" style="border:0;" allowfullscreen loading="lazy"
-                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <iframe x-bind:src="urlIframe" width="100%" height="650" style="border:0;" allowfullscreen
+                    loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
         </div>
     </section>
