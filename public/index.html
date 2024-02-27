@@ -23,6 +23,14 @@
                 return {
                     anoMaximo: new Date().getFullYear(),
 
+                    get urlPesquisa() {
+                        return 'https://www.carflix.com.br/vender-meu-carro/?' + new URLSearchParams({
+                            id: this.form.id,
+                            telefone: this.form.telefone,
+                            email: this.form.email,
+                        })
+                    },
+
                     onSearch: function (q) {
 
                         if (! this.form.ano) return;
@@ -144,7 +152,7 @@
 
                         <div class="flex justify-center">
                             <a
-                                x-bind:href="'https://www.carflix.com.br/vender-meu-carro/?' + new URLSearchParams(form)"
+                                x-bind:href="urlPesquisa"
                                 class="cf-button bg-primary border-2 text-white text-lg hover:bg-transparent hover:text-primary hover:border-primary"
                                 type="submit">
                                 Quer Vender
