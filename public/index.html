@@ -315,7 +315,7 @@
                     </div>
                 </template>
             </aside>
-            <div class="lg:col-span-3 max-lg:hidden">
+            <div class="lg:col-span-3 max-lg:hidden relative">
                 <h2 class="text-3xl font-bold text-primary">Mapa</h2>
                 <p class="text-neutral-600 mb-5">
                     Lorem ipsum dolor sit amet consectetur adipisicing elit.
@@ -323,7 +323,7 @@
                     dolorem.
                     Ratione dolores dolorum rerum magni sint, doloremque facere veritatis.
                 </p>
-                <iframe x-bind:src="urlIframe" width="100%" height="650" style="border:0;" allowfullscreen
+                <iframe class="sticky top-5" x-bind:src="urlIframe" width="100%" height="650" style="border:0;" allowfullscreen
                     loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
         </div>

@@ -4,6 +4,6 @@
   },
   "scripts": {
     "dev": "npx tailwindcss -i ./input.css -o ./public/app.css --watch",
-    "build": "npx tailwindcss -i ./input.css -o ./public/app.css --build"
+    "build": "npx tailwindcss -i ./input.css -o ./public/app.css --minify"
   }
 }
