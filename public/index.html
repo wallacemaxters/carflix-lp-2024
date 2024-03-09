@@ -7,12 +7,12 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
     <link
         href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="/app.css">
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/mask@3.x.x/dist/cdn.min.js"></script>
-
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     <script>
@@ -62,41 +62,532 @@
                     }
                 };
             })
-
-            Alpine.data('map', () => {
-                const ITEMS = [
-                    { "id": "75dd96af-e14a-4906-b086-eb5812263573", "title": "Carflix Brooklin", "address1": "Av Vereador José Diniz 1352", "address2": "São Paulo, SP, Brazil", "coords": { "lat": -23.6324513, "lng": -46.6890561 }, "placeId": "ChIJBX65KuNRzpQRHhpq7edQyjo" },
-                    { "id": "34AB9897-C74F-4141-B039-8D818305E3C2", "title": "Carflix Butantã", "address1": "Av. Prof. Francisco Morato, 2718", "address2": "São Paulo, SP, Brazil", "coords": { "lat": -23.5846118, "lng": -46.7251668 } },
-                    { "id": "03C4F2B7-16FB-4223-8B32-53F9DFCBFD63", "title": "Carflix Pompeia", "address1": "Rua Coriolano, 405", "address2": "São Paulo, SP, Brazil", "coords": { "lat": -23.5262262, "lng": -46.6893611 }, "placeId": "ChIJ09bkp3b5zpQRy5rWIgpxOm8" },
-                    { "id": "3685D67D-ADCF-4A49-A156-6431D314B645", "title": "Carflix Tatuapé", "address1": "Rua Coelho Lisboa, 861", "address2": "São Paulo, SP, Brazil", "coords": { "lat": -23.5517272, "lng": -46.571113 }, "placeId": "ChIJxUS9i29fzpQRUsdQmK_ukWs" },
-                    { "id": "8CB9A9CF-E362-4599-B67C-FBEA0D5C7531", "title": "Carflix Villa Lobos", "address1": "Av. Queiroz Filho, 923 - Loja 03", "address2": "São Paulo, SP, Brazil", "coords": { "lat": -23.5400497, "lng": -46.7277162 }, "placeId": "ChIJvyBbnbJXzpQR2RJas-ZscRE" },
-                    { "id": "178DAA19-F2FF-4B6B-9957-630A277A0ABF", "title": "Carflix Barra", "address1": "Avenida Ayrton Senna, 2600", "address2": "Rio de Janeiro, RJ, Brazil", "coords": { "lat": -22.9883631, "lng": -43.3638919 }, "placeId": "ChIJZfL7PKXbmwARz2bKtzk4yBY" },
-                    { "id": "2bee9e11-e414-47a9-afb0-d13cc72ce44a", "title": "Carflix São Bernardo do Campo", "address1": "Av. Pereira Barreto, 150 - loja 11 (Supermercado Sond)", "address2": " São Bernardo do Campo, SP, Brazil", "coords": { "lat": -23.686447, "lng": -46.5463291 }, "placeId": "ChIJR-1YddpDzpQR7RaNgGcI33I" },
-                    { "id": "7b04e2d8-ce41-4501-a391-b93ce39bc423", "title": "Carflix Santana", "address1": "Av. Água Fria, 430", "address2": "São Paulo, SP, Brazil", "coords": { "lat": -23.4834701, "lng": -46.6298157 }, "placeId": "ChIJuVN_5GT3zpQRs5DlkylbcSE" },
-                    { "id": "07caa552-2106-4010-ba8b-f57ea264f775", "title": "Carflix Guaruhos", "address1": "Av. Paulo Faccini, 925 - Loja 28, lote B", "address2": "Guarulhos, SP, Brazil", "coords": { "lat": -23.4623505, "lng": -46.5387704 }, "placeId": "ChIJb11LVmf1zpQRUlXQ4m-Esjw" }
-                ];
-                return {
-                    init() {
-                        this.currentItem = this.items[0]
-                    },
-                    select(item) {
-                        this.currentItem = item;
-                    },
-                    search: function (v) {
-                        this.items = ITEMS.filter(x => JSON.stringify(x).toLowerCase().includes(v));
-                    },
-                    items: ITEMS,
-                    currentItem: null,
-
-                    get urlIframe() {
-                        return `https://maps.google.com/maps?q=${this.currentItem.coords.lat},${this.currentItem.coords.lng}&t=&z=16&ie=UTF8&iwloc=&output=embed`
-                    }
-                }
-            })
         })
     </script>
 
     <title>Carflix</title>
+
+
+    <!-- ______________________________ -->
+
+
+    <style>
+        div.bioep-left {
+            width: 50%;
+            float: left;
+        }
+
+        div.bioep-right {
+            margin-left: 50%;
+        }
+
+        div.bioep-center {
+            margin: auto;
+            padding: 30px;
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        main {
+            padding-top: 0;
+        }
+    </style>
+    <!-- Global site tag (gtag.js) - Google Ads: 704589663 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-704589663"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'AW-704589663');</script>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/handlebars/4.7.7/handlebars.min.js"></script>
+    <meta name="robots" content="noindex">
+
+    <script>
+        'use strict';
+
+        /** Hide a DOM element. */
+        function hideElement(el) {
+            el.style.display = 'none';
+        }
+
+        /** Show a DOM element that has been hidden. */
+        function showElement(el) {
+            el.style.display = 'block';
+        }
+
+        /** Helper function to generate a Google Maps directions URL */
+        function generateDirectionsURL(origin, destination) {
+            const googleMapsUrlBase = 'https://www.google.com/maps/dir/?';
+            const searchParams = new URLSearchParams('api=1');
+            searchParams.append('origin', origin);
+            const destinationParam = [];
+            // Add title to destinationParam except in cases where Quick Builder set
+            // the title to the first line of the address
+            if (destination.title !== destination.address1) {
+                destinationParam.push(destination.title);
+            }
+            destinationParam.push(destination.address1, destination.address2);
+            searchParams.append('destination', destinationParam.join(','));
+            return googleMapsUrlBase + searchParams.toString();
+        }
+
+        /**
+         * Defines an instance of the Locator+ solution, to be instantiated
+         * when the Maps library is loaded.
+         */
+        function LocatorPlus(configuration) {
+            const locator = this;
+
+            locator.locations = configuration.locations || [];
+            locator.capabilities = configuration.capabilities || {};
+
+            const mapEl = document.getElementById('gmp-map');
+            const panelEl = document.getElementById('locations-panel');
+            locator.panelListEl = document.getElementById('locations-panel-list');
+            const sectionNameEl =
+                document.getElementById('location-results-section-name');
+            const resultsContainerEl = document.getElementById('location-results-list');
+
+            const itemsTemplate = Handlebars.compile(
+                document.getElementById('locator-result-items-tmpl').innerHTML);
+
+            locator.searchLocation = null;
+            locator.searchLocationMarker = null;
+            locator.selectedLocationIdx = null;
+            locator.userCountry = null;
+
+            // Initialize the map -------------------------------------------------------
+            locator.map = new google.maps.Map(mapEl, configuration.mapOptions);
+
+            // Store selection.
+            const selectResultItem = function (locationIdx, panToMarker, scrollToResult) {
+                locator.selectedLocationIdx = locationIdx;
+                locator.map.setZoom(15);
+                for (let locationElem of resultsContainerEl.children) {
+                    locationElem.classList.remove('selected');
+                    if (getResultIndex(locationElem) === locator.selectedLocationIdx) {
+                        locationElem.classList.add('selected');
+                        if (scrollToResult) {
+                            panelEl.scrollTop = locationElem.offsetTop;
+                        }
+                    }
+                }
+                if (panToMarker && (locationIdx != null)) {
+                    locator.map.panTo(locator.locations[locationIdx].coords);
+                }
+            };
+
+            // Create a marker for each location.
+            const markers = locator.locations.map(function (location, index) {
+                const marker = new google.maps.Marker({
+                    position: location.coords,
+                    map: locator.map,
+                    title: location.title,
+                });
+                marker.addListener('click', function () {
+                    selectResultItem(index, false, true);
+                });
+                return marker;
+            });
+
+            // Fit map to marker bounds.
+            locator.updateBounds = function () {
+                const bounds = new google.maps.LatLngBounds();
+                if (locator.searchLocationMarker) {
+                    bounds.extend(locator.searchLocationMarker.getPosition());
+                }
+                for (let i = 0; i < markers.length; i++) {
+                    bounds.extend(markers[i].getPosition());
+                }
+                locator.map.fitBounds(bounds);
+            };
+            if (locator.locations.length) {
+                locator.updateBounds();
+            }
+
+            // Get the distance of a store location to the user's location,
+            // used in sorting the list.
+            const getLocationDistance = function (location) {
+                if (!locator.searchLocation) return null;
+
+                // Use travel distance if available (from Distance Matrix).
+                if (location.travelDistanceValue != null) {
+                    if (location.travelDistanceTime.includes('hora')) {
+                        const timeTotal = parseInt(location.travelDistanceTime.split(' ')[0]);
+                        //console.log('timeTotoal', location.travelDistanceTime)
+                        return timeTotal * 60;
+                    }
+                    else {
+                        return location.travelDistanceTime.split(' ')[0];
+                    }
+                }
+
+                // Fall back to straight-line distance.
+                return google.maps.geometry.spherical.computeDistanceBetween(
+                    new google.maps.LatLng(location.coords),
+                    locator.searchLocation.location);
+            };
+
+            // Render the results list --------------------------------------------------
+            const getResultIndex = function (elem) {
+                return parseInt(elem.getAttribute('data-location-index'));
+            };
+
+            locator.renderResultsList = function () {
+                let locations = locator.locations.slice();
+                for (let i = 0; i < locations.length; i++) {
+                    locations[i].index = i;
+                }
+                if (locator.searchLocation) {
+                    sectionNameEl.textContent =
+                        'Unidades mais próximas (' + locations.length + ')';
+                    locations.sort(function (a, b) {
+                        return getLocationDistance(a) - getLocationDistance(b);
+                    });
+                } else {
+                    sectionNameEl.textContent = `Nossas Unidades (${locations.length})`;
+                }
+                const resultItemContext = { locations: locations };
+                resultsContainerEl.innerHTML = itemsTemplate(resultItemContext);
+                console.log('locations')
+                console.log(locations)
+                for (let item of resultsContainerEl.children) {
+                    const resultIndex = getResultIndex(item);
+                    if (resultIndex === locator.selectedLocationIdx) {
+                        item.classList.add('selected');
+                    }
+
+                    const resultSelectionHandler = function () {
+                        if (resultIndex !== locator.selectedLocationIdx) {
+                            selectResultItem(resultIndex, true, false);
+                        }
+                    };
+
+                    // Clicking anywhere on the item selects this location.
+                    // Additionally, create a button element to make this behavior
+                    // accessible under tab navigation.
+                    item.addEventListener('click', resultSelectionHandler);
+                    item.querySelector('.select-location')
+                        .addEventListener('click', function (e) {
+                            resultSelectionHandler();
+                            e.stopPropagation();
+                        });
+
+                    // For each action that contains links to multiple booking partners,
+                    // display the links in a toggleable dropdown menu.
+                    item.querySelectorAll('.dropdown-container').forEach((containerEl) => {
+                        const dropdownEl = containerEl.querySelector('.action-dropdown');
+                        const dropdownToggleEl =
+                            containerEl.querySelector('.action-dropdown-toggle');
+                        dropdownToggleEl.addEventListener('click', function (e) {
+                            // First check if any dropdown menu is open and close it.
+                            if (locator.openDropdownEl) {
+                                hideElement(locator.openDropdownEl);
+                                if (locator.openDropdownEl === dropdownEl) {
+                                    locator.openDropdownEl = undefined;
+                                    return;
+                                }
+                            }
+                            showElement(dropdownEl);
+                            locator.openDropdownEl = dropdownEl;
+                        });
+                    });
+
+                    // Clicking the directions button will open Google Maps directions in a
+                    // new tab
+                    const origin = (locator.searchLocation != null) ?
+                        locator.searchLocation.location :
+                        '';
+                    const destination = locator.locations[resultIndex];
+                    const googleMapsUrl = generateDirectionsURL(origin, destination);
+                    item.querySelector('.directions-button')
+                        .setAttribute('href', googleMapsUrl);
+                }
+            };
+
+            window.addEventListener('click', function (e) {
+                // Collapse any open dropdown menu when user clicks outside it.
+                if (locator.openDropdownEl && !locator.openDropdownEl.parentNode.contains(e.target)) {
+                    hideElement(locator.openDropdownEl);
+                    locator.openDropdownEl = undefined;
+                }
+            });
+
+            // Optional capability initialization --------------------------------------
+            initializeSearchInput(locator);
+            initializeDistanceMatrix(locator);
+
+            // Initial render of results -----------------------------------------------
+            locator.renderResultsList();
+        }
+
+        /** When the search input capability is enabled, initialize it. */
+        function initializeSearchInput(locator) {
+            const geocodeCache = new Map();
+            const geocoder = new google.maps.Geocoder();
+
+            const searchInputEl = document.getElementById('location-search-input');
+            const searchButtonEl = document.getElementById('location-search-button');
+
+            const updateSearchLocation = function (address, location) {
+                if (locator.searchLocationMarker) {
+                    locator.searchLocationMarker.setMap(null);
+                }
+                if (!location) {
+                    locator.searchLocation = null;
+                    return;
+                }
+
+                locator.searchLocation = { 'address': address, 'location': location };
+                locator.searchLocationMarker = new google.maps.Marker({
+                    position: location,
+                    map: locator.map,
+                    title: 'My location',
+                    icon: {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        scale: 15,
+                        fillColor: '#3367D6',
+                        fillOpacity: 0.5,
+                        strokeOpacity: 0,
+                    }
+                });
+
+                console.log(locator.searchLocationMarker)
+                locator.searchLocationMarker.map.setZoom(15);
+                // Update the locator's idea of the user's country, used for units. Use
+                // `formatted_address` instead of the more structured `address_components`
+                // to avoid an additional billed call.
+                const addressParts = address.split(' ');
+                locator.userCountry = addressParts[addressParts.length - 1];
+
+                // Update map bounds to include the new location marker.
+                locator.updateBounds();
+
+                // Update the result list so we can sort it by proximity.
+                locator.renderResultsList();
+
+                locator.updateTravelTimes();
+            };
+
+            const geocodeSearch = function (query) {
+                if (!query) {
+                    return;
+                }
+
+                query = 'CEP ' + query;
+                console.log('query', query)
+
+                const handleResult = function (geocodeResult) {
+                    //aqui
+                    $('#location-results-section-title').text('Endereço Pesquisado: ' + geocodeResult.formatted_address)
+                    //searchInputEl.value = geocodeResult.formatted_address;
+                    updateSearchLocation(
+                        geocodeResult.formatted_address, geocodeResult.geometry.location);
+                };
+
+                if (geocodeCache.has(query)) {
+                    handleResult(geocodeCache.get(query));
+                    return;
+                }
+                const request = { address: query, bounds: locator.map.getBounds() };
+                geocoder.geocode(request, function (results, status) {
+                    if (status === 'OK') {
+                        if (results.length > 0) {
+                            const result = results[0];
+                            geocodeCache.set(query, result);
+                            handleResult(result);
+                        }
+                    }
+                });
+            };
+
+            // Set up geocoding on the search input.
+            searchButtonEl.addEventListener('click', function () {
+                geocodeSearch(searchInputEl.value.trim());
+            });
+
+            // Initialize Autocomplete.
+            //initializeSearchInputAutocomplete(
+            //    locator, searchInputEl, geocodeSearch, updateSearchLocation);
+        }
+
+        /** Add Autocomplete to the search input. */
+        function initializeSearchInputAutocomplete(
+            locator, searchInputEl, fallbackSearch, searchLocationUpdater) {
+            // Set up Autocomplete on the search input. Bias results to map viewport.
+            const autocomplete = new google.maps.places.Autocomplete(searchInputEl, {
+                types: ['geocode'],
+                fields: ['place_id', 'formatted_address', 'geometry.location']
+            });
+            autocomplete.bindTo('bounds', locator.map);
+            autocomplete.addListener('place_changed', function () {
+                const placeResult = autocomplete.getPlace();
+                if (!placeResult.geometry) {
+                    // Hitting 'Enter' without selecting a suggestion will result in a
+                    // placeResult with only the text input value as the 'name' field.
+                    fallbackSearch(placeResult.name);
+                    return;
+                }
+                searchLocationUpdater(
+                    placeResult.formatted_address, placeResult.geometry.location);
+            });
+        }
+
+        /** Initialize Distance Matrix for the locator. */
+        function initializeDistanceMatrix(locator) {
+            const distanceMatrixService = new google.maps.DistanceMatrixService();
+
+            // Annotate travel times to the selected location using Distance Matrix.
+            locator.updateTravelTimes = function () {
+                if (!locator.searchLocation) return;
+
+                const units = (locator.userCountry === 'USA') ?
+                    google.maps.UnitSystem.IMPERIAL :
+                    google.maps.UnitSystem.METRIC;
+                const request = {
+                    origins: [locator.searchLocation.location],
+                    destinations: locator.locations.map(function (x) {
+                        return x.coords;
+                    }),
+                    travelMode: google.maps.TravelMode.DRIVING,
+                    unitSystem: units,
+                };
+                const callback = function (response, status) {
+                    if (status === 'OK') {
+                        const distances = response.rows[0].elements;
+                        console.log('distances', distances)
+                        for (let i = 0; i < distances.length; i++) {
+                            const distResult = distances[i];
+                            let travelDistanceText, travelDistanceValue, travelDistanceTime;
+                            if (distResult.status === 'OK') {
+                                travelDistanceText = distResult.distance.text;
+                                travelDistanceValue = distResult.distance.value;
+                                travelDistanceTime = distResult.duration.text;
+                            }
+                            const location = locator.locations[i];
+                            location.travelDistanceText = travelDistanceText;
+                            location.travelDistanceValue = travelDistanceValue;
+                            location.travelDistanceTime = travelDistanceTime;
+                        }
+
+                        //console.log('locations', locator.locations)
+                        // Re-render the results list, in case the ordering has changed.
+                        locator.renderResultsList();
+                        $('.location-result')[0].click();
+                    }
+                };
+                distanceMatrixService.getDistanceMatrix(request, callback);
+            };
+        }
+    </script>
+    <script>
+        const CONFIGURATION = {
+            "locations": [
+                { "id": "75dd96af-e14a-4906-b086-eb5812263573", "title": "Carflix Brooklin", "address1": "Av Vereador José Diniz 1352", "address2": "São Paulo, SP, Brazil", "coords": { "lat": -23.6324513, "lng": -46.6890561 }, "placeId": "ChIJBX65KuNRzpQRHhpq7edQyjo" },
+                { "id": "34AB9897-C74F-4141-B039-8D818305E3C2", "title": "Carflix Butantã", "address1": "Av. Prof. Francisco Morato, 2718", "address2": "São Paulo, SP, Brazil", "coords": { "lat": -23.5846118, "lng": -46.7251668 } },
+                { "id": "03C4F2B7-16FB-4223-8B32-53F9DFCBFD63", "title": "Carflix Pompeia", "address1": "Rua Coriolano, 405", "address2": "São Paulo, SP, Brazil", "coords": { "lat": -23.5262262, "lng": -46.6893611 }, "placeId": "ChIJ09bkp3b5zpQRy5rWIgpxOm8" },
+                { "id": "3685D67D-ADCF-4A49-A156-6431D314B645", "title": "Carflix Tatuapé", "address1": "Rua Coelho Lisboa, 861", "address2": "São Paulo, SP, Brazil", "coords": { "lat": -23.5517272, "lng": -46.571113 }, "placeId": "ChIJxUS9i29fzpQRUsdQmK_ukWs" },
+                { "id": "8CB9A9CF-E362-4599-B67C-FBEA0D5C7531", "title": "Carflix Villa Lobos", "address1": "Av. Queiroz Filho, 923 - Loja 03", "address2": "São Paulo, SP, Brazil", "coords": { "lat": -23.5400497, "lng": -46.7277162 }, "placeId": "ChIJvyBbnbJXzpQR2RJas-ZscRE" },
+                { "id": "178DAA19-F2FF-4B6B-9957-630A277A0ABF", "title": "Carflix Barra", "address1": "Avenida Ayrton Senna, 2600", "address2": "Rio de Janeiro, RJ, Brazil", "coords": { "lat": -22.9883631, "lng": -43.3638919 }, "placeId": "ChIJZfL7PKXbmwARz2bKtzk4yBY" },
+                { "id": "2bee9e11-e414-47a9-afb0-d13cc72ce44a", "title": "Carflix São Bernardo do Campo", "address1": "Av. Pereira Barreto, 150 - loja 11 (Supermercado Sond)", "address2": " São Bernardo do Campo, SP, Brazil", "coords": { "lat": -23.686447, "lng": -46.5463291 }, "placeId": "ChIJR-1YddpDzpQR7RaNgGcI33I" },
+                { "id": "7b04e2d8-ce41-4501-a391-b93ce39bc423", "title": "Carflix Santana", "address1": "Av. Água Fria, 430", "address2": "São Paulo, SP, Brazil", "coords": { "lat": -23.4834701, "lng": -46.6298157 }, "placeId": "ChIJuVN_5GT3zpQRs5DlkylbcSE" },
+                { "id": "07caa552-2106-4010-ba8b-f57ea264f775", "title": "Carflix Guaruhos", "address1": "Av. Paulo Faccini, 925 - Loja 28, lote B", "address2": "Guarulhos, SP, Brazil", "coords": { "lat": -23.4623505, "lng": -46.5387704 }, "placeId": "ChIJb11LVmf1zpQRUlXQ4m-Esjw" }
+            ],
+            "mapOptions": { "center": { "lat": 38.0, "lng": -100.0 }, "fullscreenControl": true, "mapTypeControl": false, "streetViewControl": false, "zoom": 4, "zoomControl": true, "maxZoom": 17, "mapId": "" },
+            "mapsApiKey": "AIzaSyApkiZ2mnHduKvJKnZpjnoMMFtsTLWAha0",
+            "capabilities": { "input": true, "autocomplete": true, "directions": false, "distanceMatrix": true, "details": false, "actions": true }
+        };
+
+        function initMap() {
+            new LocatorPlus(CONFIGURATION);
+        }
+    </script>
+    <script id="locator-result-items-tmpl" type="text/x-handlebars-template">
+          {{#each locations}}
+            <li class="location-result text-xs" data-location-index="{{index}}">
+                    <button class="select-location">
+                        <h2 class="text-primary font-bold text-xl cursor-pointer">{{title}}</h2>
+                    </button>
+                    <div class="address mb-2">{{address1}}<br>{{address2}}</div>
+                    <div div class="grid grid-cols-2 gap-3 mb-2">
+                        <p>
+                            <strong>Tel:</strong> <span>{{phone}}</span>
+                        </p>
+                        <p>
+                            <strong>E-mail:</strong> <span>{{email}}</span>
+                        </p>
+                    </div>
+                    <p class="text-sm">
+                        <strong>Horário de funcionamento:</strong> <span>{{opening_hours}}</span>
+                    </p>
+                    <a href="https://wa.me/numero" class="font-bold flex items-center">
+                        <svg class="w-9 flex-none" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 27 26">
+                            <path fill="#fff"
+                                d="m3.424 23.183 1.43-5.223a10.06 10.06 0 0 1-1.346-5.04C3.511 7.364 8.033 2.843 13.592 2.843a10.02 10.02 0 0 1 7.132 2.956 10.019 10.019 0 0 1 2.95 7.13c-.002 5.558-4.526 10.08-10.082 10.08h-.005c-1.687 0-3.345-.423-4.818-1.227l-5.345 1.402Z" />
+                            <path fill="#fff"
+                                d="M3.424 23.449a.265.265 0 0 1-.256-.335l1.401-5.118a10.345 10.345 0 0 1-1.326-5.074C3.246 7.216 7.888 2.575 13.592 2.575a10.285 10.285 0 0 1 7.32 3.034 10.282 10.282 0 0 1 3.028 7.319c-.002 5.704-4.645 10.345-10.348 10.345-1.694 0-3.37-.419-4.856-1.21L3.49 23.44a.245.245 0 0 1-.067.009Z" />
+                            <path fill="#CFD8DC"
+                                d="M13.591 2.842a10.02 10.02 0 0 1 7.133 2.956 10.02 10.02 0 0 1 2.95 7.13c-.002 5.558-4.525 10.08-10.082 10.08h-.005c-1.687 0-3.345-.423-4.818-1.227l-5.345 1.402 1.43-5.223a10.059 10.059 0 0 1-1.346-5.039C3.511 7.363 8.033 2.842 13.592 2.842Zm0-.531c-5.85 0-10.611 4.76-10.614 10.61 0 1.788.451 3.55 1.307 5.11l-1.373 5.013a.53.53 0 0 0 .648.653l5.144-1.349a10.636 10.636 0 0 0 4.884 1.192c5.855 0 10.616-4.76 10.619-10.61A10.545 10.545 0 0 0 21.1 5.423a10.551 10.551 0 0 0-7.509-3.112Z" />
+                            <path fill="#40C351"
+                                d="M19.52 7.001a8.324 8.324 0 0 0-5.926-2.456c-4.622 0-8.381 3.757-8.384 8.377 0 1.583.443 3.124 1.282 4.458l.2.317-.847 3.092 3.172-.832.306.182a8.364 8.364 0 0 0 4.265 1.167h.004c4.619 0 8.378-3.758 8.38-8.378 0-2.238-.87-4.343-2.453-5.927Z" />
+                            <path fill="#fff" fill-rule="evenodd"
+                                d="M11.071 8.708c-.188-.42-.387-.428-.567-.436-.147-.006-.315-.006-.483-.006a.926.926 0 0 0-.672.316c-.23.252-.882.861-.882 2.1 0 1.24.903 2.438 1.029 2.606.126.168 1.743 2.793 4.304 3.803 2.128.839 2.561.672 3.023.63.462-.042 1.49-.609 1.7-1.197.21-.589.21-1.093.148-1.198-.064-.105-.232-.168-.483-.294-.252-.126-1.49-.736-1.722-.82-.23-.083-.399-.125-.567.127-.168.252-.65.82-.798.987-.147.168-.294.19-.546.063-.251-.126-1.063-.392-2.026-1.25-.748-.667-1.254-1.492-1.401-1.744-.147-.252-.016-.388.11-.514.114-.114.252-.295.379-.442.125-.147.167-.252.251-.42.084-.168.042-.315-.021-.441-.062-.126-.552-1.372-.776-1.87Z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        <span>
+                            Entre em contato agora pelo WhatsApp
+                        </span>
+                    </a>
+                <div class="options">
+                    {{#each actions}}
+                    <div class="option-container {{#if additionalLinks.length}}dropdown-container{{/if}}">
+                        <div class="action-button {{#if defaultUrl}}{{#if additionalLinks.length}}split-action-button{{/if}}{{/if}}">
+                            {{#if defaultUrl}}
+                            <a href="{{defaultUrl}}" target="_blank" class="option">
+                                <span>{{label}}</span>
+                                {{#unless additionalLinks.length}}
+                                <img class="open-icon" src="https://fonts.gstatic.com/s/i/googlematerialicons/open_in_new/v16/24px.svg" alt="open in new window" />
+                                {{/unless}}
+                            </a>
+                            {{/if}}
+                            {{#if additionalLinks.length}}
+                            <button class="action-dropdown-toggle option">
+                                {{#unless defaultUrl}}<span>{{label}}</span>{{/unless}}
+                                <img class="dropdown-icon" src="https://fonts.gstatic.com/s/i/googlematerialicons/arrow_drop_down/v16/24px.svg" alt="dropdown" />
+                            </button>
+                            {{/if}}
+                        </div>
+                        {{#if additionalLinks.length}}
+                        <div class="action-dropdown">
+                            {{#each additionalLinks}}
+                            <a href="{{url}}" target="_blank">
+                                {{#if iconUrl}}
+                                <img src="{{iconUrl}}" alt="icon" />
+                                {{else}}
+                                <img src="https://fonts.gstatic.com/s/i/googlematerialicons/link/v16/24px.svg" alt="link" />
+                                {{/if}}
+                                <span>{{name}}</span>
+                            </a>
+                            {{/each}}
+                        </div>
+                        {{/if}}
+                    </div>
+                    {{/each}}
+                </div>
+                {{#if travelDistanceText}}
+                <div class="distance">{{travelDistanceText}}</div>
+                <div class="distance-time">{{travelDistanceTime}}</div>
+                {{/if}}
+                <a class="directions-button" href="" target="_blank" title="Get directions to this location on Google Maps">
+                    <svg width="34" height="34" viewBox="0 0 34 34"
+                        fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M17.5867 9.24375L17.9403 8.8902V8.8902L17.5867 9.24375ZM16.4117 9.24375L16.7653 9.59731L16.7675 9.59502L16.4117 9.24375ZM8.91172 16.7437L8.55817 16.3902L8.91172 16.7437ZM8.91172 17.9229L8.55817 18.2765L8.55826 18.2766L8.91172 17.9229ZM16.4117 25.4187H16.9117V25.2116L16.7652 25.0651L16.4117 25.4187ZM16.4117 25.4229H15.9117V25.63L16.0582 25.7765L16.4117 25.4229ZM25.0909 17.9229L25.4444 18.2765L25.4467 18.2742L25.0909 17.9229ZM25.4403 16.3902L17.9403 8.8902L17.2332 9.5973L24.7332 17.0973L25.4403 16.3902ZM17.9403 8.8902C17.4213 8.3712 16.5737 8.3679 16.0559 8.89248L16.7675 9.59502C16.8914 9.4696 17.1022 9.4663 17.2332 9.5973L17.9403 8.8902ZM16.0582 8.8902L8.55817 16.3902L9.26527 17.0973L16.7653 9.5973L16.0582 8.8902ZM8.55817 16.3902C8.0379 16.9105 8.0379 17.7562 8.55817 18.2765L9.26527 17.5694C9.13553 17.4396 9.13553 17.227 9.26527 17.0973L8.55817 16.3902ZM8.55826 18.2766L16.0583 25.7724L16.7652 25.0651L9.26517 17.5693L8.55826 18.2766ZM15.9117 25.4187V25.4229H16.9117V25.4187H15.9117ZM16.0582 25.7765C16.5784 26.2967 17.4242 26.2967 17.9444 25.7765L17.2373 25.0694C17.1076 25.1991 16.895 25.1991 16.7653 25.0694L16.0582 25.7765ZM17.9444 25.7765L25.4444 18.2765L24.7373 17.5694L17.2373 25.0694L17.9444 25.7765ZM25.4467 18.2742C25.9631 17.7512 25.9663 16.9096 25.438 16.3879L24.7354 17.0995C24.8655 17.2279 24.8687 17.4363 24.7351 17.5716L25.4467 18.2742Z" fill="#1967d2" />
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M19 19.8333V17.75H15.6667V20.25H14V16.9167C14 16.4542 14.3708 16.0833 14.8333 16.0833H19V14L21.9167 16.9167L19 19.8333Z" fill="#1967d2" />
+                        <circle class="directions-button-background" cx="17" cy="17" r="16.5" stroke="#1967d2" />
+                    </svg>
+                </a>
+            </li>
+          {{/each}}
+      </script>
 </head>
 
 <body class="text-neutral-700">
@@ -260,74 +751,28 @@
         </div>
     </section>
 
-
-    <section class="lg:py-20 py-12" x-data="map">
-        <div class="cf-container grid lg:grid-cols-5 grid-cols-1 gap-8">
-            <aside class="lg:col-span-2 space-y-4 bg-neutral-50 p-8 shadow-lg shadow-neutral-400">
-                <h2 class="text-4xl font-bold text-primary">
-                    Encontre uma loja perto de você
-                </h2>
-                <div class="flex items-center relative">
-                    <input class="cf-input" placeholder="Digite o Cep ou Endereço"
-                        x-on:input="search($event.target.value)">
-
-                    <svg class="absolute right-3 pointer-events-none" xmlns="http://www.w3.org/2000/svg" width="24"
-                        height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                    </svg>
+    <div id="map-container" class="relative h-[700px] cf-container lg:my-20 my-12">
+        <div id="locations-panel">
+            <div id="locations-panel-list">
+                <header class="space-y-3">
+                    <h2 class="text-4xl font-bold text-primary">
+                        Encontre uma loja perto de você
+                    </h2>
+                    <input id="location-search-input" class="cf-input" placeholder="Digite o seu CEP" />
+                    <button id="location-search-button" class="cf-button bg-primary text-white w-full">Buscar</button>
+                </header>
+                <div class="section-name" id="location-results-section-title"></div>
+                <div class="section-name" id="location-results-section-name">
+                    Lojas
                 </div>
-                <template x-for="item in items">
-                    <div class="shadow p-4 bg-white block">
-                        <a x-on:click="select(item)" class="text-primary font-bold text-xl cursor-pointer" x-text="item.title"></a>
-                        <div class="text-xs space-y-2">
-                            <p x-text="item.address1"></p>
-                            <div class="grid grid-cols-2">
-                                <p>
-                                    <strong>Tel:</strong> <span x-text="item.phone"></span>
-                                </p>
-                                <p><strong>E-mail:</strong> <span x-text="item.email"></span></p>
-                            </div>
-                            <p>
-                                <strong>Horário de funcionamento:</strong> <span x-text="item.opening_hours"></span>
-                            </p>
-                            <a href="https://wa.me/numero" class="font-bold flex items-center">
-                                <svg class="w-9 flex-none" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                    viewBox="0 0 27 26">
-                                    <path fill="#fff"
-                                        d="m3.424 23.183 1.43-5.223a10.06 10.06 0 0 1-1.346-5.04C3.511 7.364 8.033 2.843 13.592 2.843a10.02 10.02 0 0 1 7.132 2.956 10.019 10.019 0 0 1 2.95 7.13c-.002 5.558-4.526 10.08-10.082 10.08h-.005c-1.687 0-3.345-.423-4.818-1.227l-5.345 1.402Z" />
-                                    <path fill="#fff"
-                                        d="M3.424 23.449a.265.265 0 0 1-.256-.335l1.401-5.118a10.345 10.345 0 0 1-1.326-5.074C3.246 7.216 7.888 2.575 13.592 2.575a10.285 10.285 0 0 1 7.32 3.034 10.282 10.282 0 0 1 3.028 7.319c-.002 5.704-4.645 10.345-10.348 10.345-1.694 0-3.37-.419-4.856-1.21L3.49 23.44a.245.245 0 0 1-.067.009Z" />
-                                    <path fill="#CFD8DC"
-                                        d="M13.591 2.842a10.02 10.02 0 0 1 7.133 2.956 10.02 10.02 0 0 1 2.95 7.13c-.002 5.558-4.525 10.08-10.082 10.08h-.005c-1.687 0-3.345-.423-4.818-1.227l-5.345 1.402 1.43-5.223a10.059 10.059 0 0 1-1.346-5.039C3.511 7.363 8.033 2.842 13.592 2.842Zm0-.531c-5.85 0-10.611 4.76-10.614 10.61 0 1.788.451 3.55 1.307 5.11l-1.373 5.013a.53.53 0 0 0 .648.653l5.144-1.349a10.636 10.636 0 0 0 4.884 1.192c5.855 0 10.616-4.76 10.619-10.61A10.545 10.545 0 0 0 21.1 5.423a10.551 10.551 0 0 0-7.509-3.112Z" />
-                                    <path fill="#40C351"
-                                        d="M19.52 7.001a8.324 8.324 0 0 0-5.926-2.456c-4.622 0-8.381 3.757-8.384 8.377 0 1.583.443 3.124 1.282 4.458l.2.317-.847 3.092 3.172-.832.306.182a8.364 8.364 0 0 0 4.265 1.167h.004c4.619 0 8.378-3.758 8.38-8.378 0-2.238-.87-4.343-2.453-5.927Z" />
-                                    <path fill="#fff" fill-rule="evenodd"
-                                        d="M11.071 8.708c-.188-.42-.387-.428-.567-.436-.147-.006-.315-.006-.483-.006a.926.926 0 0 0-.672.316c-.23.252-.882.861-.882 2.1 0 1.24.903 2.438 1.029 2.606.126.168 1.743 2.793 4.304 3.803 2.128.839 2.561.672 3.023.63.462-.042 1.49-.609 1.7-1.197.21-.589.21-1.093.148-1.198-.064-.105-.232-.168-.483-.294-.252-.126-1.49-.736-1.722-.82-.23-.083-.399-.125-.567.127-.168.252-.65.82-.798.987-.147.168-.294.19-.546.063-.251-.126-1.063-.392-2.026-1.25-.748-.667-1.254-1.492-1.401-1.744-.147-.252-.016-.388.11-.514.114-.114.252-.295.379-.442.125-.147.167-.252.251-.42.084-.168.042-.315-.021-.441-.062-.126-.552-1.372-.776-1.87Z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                <span>
-                                    Entre em contato agora pelo WhatsApp
-                                </span>
-                            </a>
-                        </div>
-                    </div>
-                </template>
-            </aside>
-            <div class="lg:col-span-3 max-lg:hidden relative">
-                <h2 class="text-3xl font-bold text-primary">Mapa</h2>
-                <p class="text-neutral-600 mb-5">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Recusandae omnis voluptatibus, nihil maiores optio dolor, excepturi libero rem aspernatur voluptas
-                    dolorem.
-                    Ratione dolores dolorum rerum magni sint, doloremque facere veritatis.
-                </p>
-                <iframe class="sticky top-5" x-bind:src="urlIframe" width="100%" height="650" style="border:0;" allowfullscreen
-                    loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <div class="results">
+                    <ul id="location-results-list" class="space-y-4"></ul>
+                </div>
             </div>
         </div>
-    </section>
+        <div id="gmp-map"></div>
+    </div>
+
 
 
     <section>
@@ -446,7 +891,7 @@
     </div>
     <script>
         document.querySelector('#btn-mobile-menu').addEventListener('click', function () {
-            console.log('oias')
+
             const el = document.querySelector('#mobile-menu');
 
             const OPEN_CLASS = 'max-lg:top-20';
@@ -459,6 +904,9 @@
             }
         })
     </script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCIIvSoyd2bFUxWB46fL4n8FGBUqOu1ecQ&callback=initMap&libraries=places,geometry&solution_channel=GMP_QB_locatorplus_v9_cABDX"
+        async defer></script>
 </body>
 
 </html>

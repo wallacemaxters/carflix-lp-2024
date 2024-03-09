@@ -1,0 +1,6 @@
+- Alterar azul da logo adicionando o lápis e mudando para uma imagem de protótipo e adicionar o texto "Selecionar Logo"
+- Colocar Label "Alterar Imagem" ao ládo do lápis para alterar BG
+- Deixar a mesma cor do lápis para todos os locais
+- BG preto se selecionar a cor branca
+- Borda ao alterar a cor para branco, para mostrar que é um botão
+- Alinhar botões com o layout da imagem
